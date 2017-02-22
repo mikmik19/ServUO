@@ -57,14 +57,23 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
+            if (Utility.RandomDouble() < 0.12)
+                c.DropItem(new BottleIchor());
+
             if (Utility.RandomDouble() < 0.01)
-            {
                 c.DropItem(new LuckyCoin());
-            }
 
             if (Utility.RandomDouble() < 0.05)
             {
-                c.DropItem(new TatteredAncientScroll());
+                switch (Utility.Random(2))
+                {
+                    case 0:
+                        c.DropItem(new SpiderCarapace());
+                        break;
+                    case 1:
+                        c.DropItem(new TatteredAncientScroll());
+                        break;
+                }
             }
         }
 

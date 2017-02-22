@@ -60,11 +60,7 @@ namespace Server.Engines.Craft
         ColdForgedBlade = 351,
         OverseerSunderedBlade = 352,
         LuminousRuneBlade = 353,
-        ShardTrasher = 354, //good
-
-        // doom 
-        BritchesOfWarding = 355,
-        GlovesOfFeudalGrip = 356
+        ShardTrasher = 354 //good
     }
     #endregion
 
@@ -85,18 +81,7 @@ namespace Server.Engines.Craft
 
         public override double GetChanceAtMin(CraftItem item)
         {
-            if (item.NameNumber == 1157349 || item.NameNumber == 1157345) // Gloves Of FeudalGrip and Britches Of Warding
-                return 0.05; // 5%
-
             return 0.0; // 0%
-        }
-
-        public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
-        {
-            if (resourceType == typeof(LeggingsOfBane) || resourceType == typeof(GauntletsOfNobility))
-                return false;
-
-            return base.ConsumeOnFailure(from, resourceType, craftItem);
         }
 
         private DefBlacksmithy()
@@ -192,9 +177,7 @@ namespace Server.Engines.Craft
 
         public override int CanCraft(Mobile from, BaseTool tool, Type itemType)
         {
-            int num = 0;
-
-            if (tool == null || tool.Deleted || tool.UsesRemaining <= 0)
+            if (tool == null || tool.Deleted || tool.UsesRemaining < 0)
             {
                 return 1044038; // You have worn out your tool!
             }
@@ -204,9 +187,9 @@ namespace Server.Engines.Craft
                 return 1048146; // If you have a tool equipped, you must use that tool.
             }
 
-            else if (!tool.CheckAccessible(from, ref num))
+            if (!BaseTool.CheckAccessible(tool, from))
             {
-                return num; // The tool must be on your person to use.
+                return 1044263; // The tool must be on your person to use.
             }
 
             bool anvil, forge;
@@ -313,19 +296,6 @@ namespace Server.Engines.Craft
             AddCraft(typeof(ChainCoif), 1111704, 1025051, 14.5, 64.5, typeof(IronIngot), 1044036, 10, 1044037);
             AddCraft(typeof(ChainLegs), 1111704, 1025054, 36.7, 86.7, typeof(IronIngot), 1044036, 18, 1044037);
             AddCraft(typeof(ChainChest), 1111704, 1025055, 39.1, 89.1, typeof(IronIngot), 1044036, 20, 1044037);
-
-            if (Core.SA)
-            {
-                #region SA
-                index = AddCraft(typeof(BritchesOfWarding), 1111704, 1157345, 120.0, 120.1, typeof(IronIngot), 1044036, 18, 1044037);
-                AddRes(index, typeof(LeggingsOfBane), 1061100, 1, 1053098);
-                AddRes(index, typeof(Turquoise), 1032691, 4, 1053098);
-                AddRes(index, typeof(BloodOfTheDarkFather), 1157343, 5, 1053098);
-                AddRecipe(index, (int)SmithRecipes.BritchesOfWarding);
-                ForceNonExceptional(index);
-                SetNeededExpansion(index, Expansion.SA);
-                #endregion
-            }
             #endregion
 
             #region Platemail
@@ -980,15 +950,6 @@ namespace Server.Engines.Craft
             AddRes(index, typeof(SmallPieceofBlackrock), 1150016, 10, 1044253);
             this.ForceNonExceptional(index);
             this.SetNeededExpansion(index, Expansion.SA);
-
-            index = AddCraft(typeof(GlovesOfFeudalGrip), 1011173, 1157349, 120.0, 120.1, typeof(RedScales), 1060883, 18, 1060884);
-            SetUseSubRes2(index, true);
-            AddRes(index, typeof(BlueDiamond), 1032696, 4, 1044253);
-            AddRes(index, typeof(GauntletsOfNobility), 1061092, 1, 1053098);
-            AddRes(index, typeof(BloodOfTheDarkFather), 1157343, 5, 1053098);
-            AddRecipe(index, (int)SmithRecipes.GlovesOfFeudalGrip);
-            ForceNonExceptional(index);
-            SetNeededExpansion(index, Expansion.SA);
             #endregion
 
             // Set the overridable material

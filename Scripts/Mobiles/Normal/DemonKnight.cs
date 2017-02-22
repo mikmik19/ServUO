@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Server.Items;
-using System.Linq;
 
 namespace Server.Mobiles
 {
@@ -10,50 +9,51 @@ namespace Server.Mobiles
     {
         private DateTime m_NextArea;
 
-        public static Type[] DoomArtifact { get { return m_DoomArtifact; } }
-        private static Type[] m_DoomArtifact = new Type[]
+        private static readonly Type[] m_DoomArtifact = new Type[]
         {
-            typeof(LegacyOfTheDreadLord),       typeof(TheTaskmaster),              typeof(TheDragonSlayer),
-            typeof(ArmorOfFortune),             typeof(GauntletsOfNobility),        typeof(HelmOfInsight),
-            typeof(HolyKnightsBreastplate),     typeof(JackalsCollar),              typeof(LeggingsOfBane),
-            typeof(MidnightBracers),            typeof(OrnateCrownOfTheHarrower),   typeof(ShadowDancerLeggings),
-            typeof(TunicOfFire),                typeof(VoiceOfTheFallenKing),       typeof(BraceletOfHealth),
-            typeof(OrnamentOfTheMagician),      typeof(RingOfTheElements),          typeof(RingOfTheVile),
-            typeof(Aegis),                      typeof(ArcaneShield),               typeof(AxeOfTheHeavens),
-            typeof(BladeOfInsanity),            typeof(BoneCrusher),                typeof(BreathOfTheDead),
-            typeof(Frostbringer),               typeof(SerpentsFang),               typeof(StaffOfTheMagi),
-            typeof(TheBeserkersMaul),           typeof(TheDryadBow),                typeof(DivineCountenance),
-            typeof(HatOfTheMagi),               typeof(HuntersHeaddress),           typeof(SpiritOfTheTotem)
+            typeof(LegacyOfTheDreadLord),
+            typeof(TheTaskmaster),
+            typeof(TheDragonSlayer),
+            typeof(ArmorOfFortune),
+            typeof(GauntletsOfNobility),
+            typeof(HelmOfInsight),
+            typeof(HolyKnightsBreastplate),
+            typeof(JackalsCollar),
+            typeof(LeggingsOfBane),
+            typeof(MidnightBracers),
+            typeof(OrnateCrownOfTheHarrower),
+            typeof(ShadowDancerLeggings),
+            typeof(TunicOfFire),
+            typeof(VoiceOfTheFallenKing),
+            typeof(BraceletOfHealth),
+            typeof(OrnamentOfTheMagician),
+            typeof(RingOfTheElements),
+            typeof(RingOfTheVile),
+            typeof(Aegis),
+            typeof(ArcaneShield),
+            typeof(AxeOfTheHeavens),
+            typeof(BladeOfInsanity),
+            typeof(BoneCrusher),
+            typeof(BreathOfTheDead),
+            typeof(Frostbringer),
+            typeof(SerpentsFang),
+            typeof(StaffOfTheMagi),
+            typeof(TheBeserkersMaul),
+            typeof(TheDryadBow),
+            typeof(DivineCountenance),
+            typeof(HatOfTheMagi),
+            typeof(HuntersHeaddress),
+            typeof(SpiritOfTheTotem),
+            typeof(BritchesOfWarding),
+            typeof(CuffsOfTheArchmage),
+            typeof(GlovesOfFeudalGrip),
+            typeof(TheScholarsHalo),
+            typeof(BraceletOfPrimalConsumption),
+            typeof(BowOfTheInfiniteSwarm),
+            typeof(Glenda),
+            typeof(TheDeceiver)
         };
-
-        public static Type[][] RewardTable { get { return m_RewardTable; } }
-        private static Type[][] m_RewardTable = new Type[][]
-        {
-            new Type[] { typeof(HatOfTheMagi) },            new Type[] { typeof(StaffOfTheMagi) },      new Type[] { typeof(OrnamentOfTheMagician) },
-            new Type[] { typeof(ShadowDancerLeggings) },    new Type[] {typeof(RingOfTheElements) },    new Type[] { typeof(GauntletsOfNobility) },
-            new Type[] { typeof(LeggingsOfBane) },          new Type[] { typeof(MidnightBracers) },     new Type[] { typeof(Glenda) },
-            new Type[] { typeof(BowOfTheInfiniteSwarm) },   new Type[] { typeof(TheDeceiver) },         new Type[] { typeof(TheScholarsHalo) },
-            new Type[] { typeof(DoomRecipeScroll) },
-            new Type[] 
-            {
-                typeof(LegacyOfTheDreadLord),       typeof(TheTaskmaster),
-                typeof(ArmorOfFortune),             typeof(HelmOfInsight),
-                typeof(HolyKnightsBreastplate),     typeof(JackalsCollar),              
-                typeof(OrnateCrownOfTheHarrower),   typeof(TheDragonSlayer),
-                typeof(TunicOfFire),                typeof(VoiceOfTheFallenKing),
-                typeof(RingOfTheVile),              typeof(BraceletOfHealth),
-                typeof(Aegis),                      typeof(ArcaneShield),
-                typeof(BladeOfInsanity),            typeof(BoneCrusher),
-                typeof(Frostbringer),               typeof(SerpentsFang),
-                typeof(TheBeserkersMaul),           typeof(TheDryadBow),
-                typeof(HuntersHeaddress),           typeof(SpiritOfTheTotem),
-                typeof(AxeOfTheHeavens),            typeof(BreathOfTheDead),
-                typeof(DivineCountenance)
-            }
-        };
-
         private static bool m_InHere;
-
         [Constructable]
         public DemonKnight()
             : base(AIType.AI_Mage, FightMode.Closest, 10, 1, 0.2, 0.4)
@@ -107,6 +107,15 @@ namespace Server.Mobiles
             : base(serial)
         {
         }
+
+        public static Type[] DoomArtifact   
+        {
+            get
+            {
+                return m_DoomArtifact;
+            }
+        }
+       
        
         public override bool IgnoreYoungProtection
         {
@@ -166,6 +175,7 @@ namespace Server.Mobiles
 
         public static void HandleKill(Mobile victim, Mobile killer)
         {
+
             PlayerMobile pm = killer as PlayerMobile;
             BaseCreature bc = victim as BaseCreature;
 
@@ -187,38 +197,18 @@ namespace Server.Mobiles
             const double B = 0.00000425531915;
 
             double chance = A * Math.Pow(10, B * gpoints);
-            double roll = Utility.RandomDouble();
+            double roll = Utility.RandomDouble();            
 
             if (chance > roll )
             {
                 Item i = null;
 
-                if (Core.TOL)
-                {
-                    int ran = Utility.Random(m_RewardTable.Length + 1);
-
-                    if (ran >= m_RewardTable.Length)
-                    {
-                        i = Loot.RandomArmorOrShieldOrWeaponOrJewelry(LootPackEntry.IsInTokuno(killer), LootPackEntry.IsMondain(killer), LootPackEntry.IsStygian(killer));
-                        RunicReforging.GenerateRandomArtifactItem(i, killer.Luck, Utility.RandomMinMax(1000, 1200));
-                        NegativeAttributes attrs = RunicReforging.GetNegativeAttributes(i);
-
-                        if (attrs != null)
-                        {
-                            attrs.Prized = 1;
-                        }
-                    }
-                    else
-                    {
-                        Type[] list = m_RewardTable[ran];
-                        Type t = list.Length == 1 ? list[0] : list[Utility.Random(list.Length)];
-
-                        i = Activator.CreateInstance(t) as Item;
-                    }
-                }
-                else
+                try
                 {
                     i = Activator.CreateInstance(m_DoomArtifact[Utility.Random(m_DoomArtifact.Length)]) as Item;
+                }
+                catch
+                {
                 }
 
                 if (i != null)
@@ -242,34 +232,8 @@ namespace Server.Mobiles
                 }
             }
         }
-
-        public override void OnDeath(Container c)
-        {
-            List<DamageStore> rights = GetLootingRights();
-
-            int top = 0;
-            Item blood = null;
-
-            foreach (Mobile m in rights.Select(x => x.m_Mobile).Distinct().Take(3))
-            {
-                if (top == 0)
-                    blood = new BloodOfTheDarkFather(5);
-                else if (top == 1)
-                    blood = new BloodOfTheDarkFather(3);
-                else if (top == 2)
-                    blood = new BloodOfTheDarkFather(2);
-
-                top++;
-
-                if (m.Backpack == null || !m.Backpack.TryDropItem(m, blood, false))
-                {
-                    m.BankBox.DropItem(blood);
-                }
-            }
-
-            base.OnDeath(c);
-        }
-
+ 
+      
         public static Mobile FindRandomPlayer(BaseCreature creature)
         {
             List<DamageStore> rights = creature.GetLootingRights();
@@ -323,7 +287,7 @@ namespace Server.Mobiles
                         continue;
                 }
 
-                if (mob != this && mob.Alive && mob.Player && this.CanBeHarmful(mob, false) && mob.AccessLevel == AccessLevel.Player)
+                if (mob != this && mob.Alive && mob.Player && this.CanBeHarmful(mob, false))
                     toTele.Add(mob);
             }
             eable.Free();
@@ -350,7 +314,7 @@ namespace Server.Mobiles
             this.AddLoot(LootPack.SuperBoss, 2);
             this.AddLoot(LootPack.HighScrolls, Utility.RandomMinMax(6, 60));
         }
-        
+
         public override void OnDamage(int amount, Mobile from, bool willKill)
         {
             if (from != null && from != this && !m_InHere)

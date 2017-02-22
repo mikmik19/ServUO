@@ -48,6 +48,14 @@ namespace Server.Mobiles
             this.PackItem(new DaemonBone(15));
         }
 
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            if (Utility.RandomDouble() < 0.5)
+                c.DropItem(new VoidOrb());
+        }
+
         public Relanord(Serial serial)
             : base(serial)
         {

@@ -77,10 +77,13 @@ namespace Server.Mobiles
 
             if (Utility.RandomDouble() < 0.05)
             {
-                switch (Utility.Random(2))
+                switch (Utility.Random(3))
                 {
                     case 0:
                         c.DropItem(new ToxicVenomSac());
+                        break;
+                    case 1:
+                        c.DropItem(new SlithTongue());
                         break;
                     case 2:
                         c.DropItem(new SlithEye());

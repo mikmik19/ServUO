@@ -38,10 +38,7 @@ namespace Server.Network
 
 	public class PromptGumpStub : Gump
 	{
-        public override int GetTypeID()
-        {
-            return 0x2AE;
-        }
+		public override int TypeID { get { return 0x2AE; } }
 
 		public PromptGumpStub( Prompt prompt, Mobile to )
 			: base( 0, 0 )

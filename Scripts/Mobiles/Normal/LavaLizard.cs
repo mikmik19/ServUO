@@ -75,6 +75,13 @@ namespace Server.Mobiles
             AddLoot(LootPack.Meager);
         }
 
+        public override void OnDeath(Container c)
+        {
+            base.OnDeath(c);
+
+            SARegionDrops.GetSADrop(c);
+        }
+
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);

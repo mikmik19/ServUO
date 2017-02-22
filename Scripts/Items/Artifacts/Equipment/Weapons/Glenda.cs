@@ -2,7 +2,7 @@ using System;
 
 namespace Server.Items
 {
-    public class Glenda : Club, ITokunoDyable
+    public class Glenda : Club
 	{
         public override int LabelNumber { get { return 1157346; } } // glenda
         public override bool IsArtifact { get { return true; } }
@@ -10,8 +10,7 @@ namespace Server.Items
         [Constructable]
         public Glenda()
         {
-            ExtendedWeaponAttributes.BoneBreaker = 1;
-
+            // Missing Bone Breaker Props
             this.WeaponAttributes.HitLeechMana = 20;
             this.WeaponAttributes.HitLowerDefend = 70;
             this.Attributes.BonusStr = 16;

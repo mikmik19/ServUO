@@ -51,10 +51,9 @@ namespace Server.Spells.Second
             else if (this.CheckHSequence(m))
             {
                 SpellHelper.Turn(this.Caster, m);
-                Mobile source = this.Caster;
 
                 if(mob != null)
-                    SpellHelper.CheckReflect((int)this.Circle, ref source, ref mob);
+                    SpellHelper.CheckReflect((int)this.Circle, this.Caster, ref mob);
 
                 double damage = 0;
 				
@@ -102,7 +101,7 @@ namespace Server.Spells.Second
 
                 if (damage > 0)
                 {
-                    SpellHelper.Damage(this, mob != null ? mob : m, damage, 0, 0, 100, 0, 0);
+                    SpellHelper.Damage(this, m, damage, 0, 0, 100, 0, 0);
                 }
             }
 

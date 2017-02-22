@@ -14,7 +14,6 @@ using Server.Spells.Seventh;
 using Server.Spells.Fourth;
 using Server.Targeting;
 using Server.Spells.SkillMasteries;
-using Server.Spells.Spellweaving;
 
 namespace Server
 {
@@ -61,7 +60,7 @@ namespace Server.Spells
 
     public class SpellHelper
     {
-        #region Spell Focus and SDI Calculations
+        #region Spell Focus
         private static SkillName[] _Schools =
         {
             SkillName.Magery,
@@ -75,73 +74,15 @@ namespace Server.Spells
             SkillName.Ninjitsu
         };
 
-        private static SkillName[] _TOLSchools =
-        {
-            SkillName.Magery,
-            SkillName.AnimalTaming,
-            SkillName.Musicianship,
-            SkillName.Mysticism,
-            SkillName.Spellweaving,
-            SkillName.Chivalry,
-            SkillName.Necromancy,
-            SkillName.Bushido,
-            SkillName.Ninjitsu,
-            SkillName.Parry
-        };
-
         public static bool HasSpellFocus(Mobile m, SkillName focus)
         {
-            SkillName[] list = Core.TOL ? _TOLSchools : _Schools;
-
-            foreach (SkillName skill in list)
+            foreach (SkillName skill in _Schools)
             {
                 if (skill != focus && m.Skills[skill].Value >= 30.0)
                     return false;
             }
 
             return true;
-        }
-
-        public static int PvPSpellDamageCap(Mobile m, SkillName castskill)
-        {
-            if (!Core.SA)
-                return 15;
-
-            if (HasSpellFocus(m, castskill))
-            {
-                return 30;
-            }
-            else
-            {
-                return Core.TOL ? 20 : 15;
-            }
-        }
-
-        public static int GetSpellDamageBonus(Mobile caster, IDamageable damageable, SkillName skill, bool playerVsPlayer)
-        {
-            Mobile target = damageable as Mobile;
-
-            int sdiBonus = AosAttributes.GetValue(caster, AosAttribute.SpellDamage);
-
-            #region Mondain's Legacy
-            sdiBonus += ArcaneEmpowermentSpell.GetSpellBonus(caster, playerVsPlayer);
-            #endregion
-
-            if (target != null)
-            {
-                if (RunedSashOfWarding.IsUnderEffects(target, WardingEffect.SpellDamage))
-                    sdiBonus -= 10;
-
-                sdiBonus -= Block.GetSpellReduction(target);
-            }
-
-            // PvP spell damage increase cap of 15% from an item’s magic property, 30% if spell school focused.
-            if (Core.SE && playerVsPlayer)
-            {
-                sdiBonus = Math.Min(sdiBonus, PvPSpellDamageCap(caster, skill));
-            }
-
-            return sdiBonus;
         }
         #endregion 
 
@@ -1064,15 +1005,13 @@ namespace Server.Spells
         }
 
         //magic reflection
-        public static bool CheckReflect(int circle, Mobile caster, ref Mobile target)
+        public static void CheckReflect(int circle, Mobile caster, ref Mobile target)
         {
-            return CheckReflect(circle, ref caster, ref target);
+            CheckReflect(circle, ref caster, ref target);
         }
 
-        public static bool CheckReflect(int circle, ref Mobile caster, ref Mobile target)
+        public static void CheckReflect(int circle, ref Mobile caster, ref Mobile target)
         {
-            bool reflect = false;
-
             if (target.MagicDamageAbsorb > 0)
             {
                 ++circle;
@@ -1081,7 +1020,7 @@ namespace Server.Spells
 
                 // This order isn't very intuitive, but you have to nullify reflect before target gets switched
 
-                reflect = (target.MagicDamageAbsorb >= 0);
+                bool reflect = (target.MagicDamageAbsorb >= 0);
 
                 if (target is BaseCreature)
                     ((BaseCreature)target).CheckReflect(caster, ref reflect);
@@ -1103,7 +1042,7 @@ namespace Server.Spells
             }
             else if (target is BaseCreature)
             {
-                reflect = false;
+                bool reflect = false;
 
                 ((BaseCreature)target).CheckReflect(caster, ref reflect);
 
@@ -1116,8 +1055,6 @@ namespace Server.Spells
                     target = temp;
                 }
             }
-
-            return reflect;
         }
 
         public static void Damage(Spell spell, Mobile target, double damage)

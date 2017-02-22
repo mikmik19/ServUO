@@ -18,11 +18,7 @@ namespace Server.Engines.Craft
         ScrappersCompendium = 453,
         HoveringWisp = 454,
 
-        KotlPowerCoil = 455,
-
-        // doom
-        BraceletOfPrimalConsumption = 456
-
+        KotlPowerCoil = 455
     }
 
     public class DefTinkering : CraftSystem
@@ -81,12 +77,10 @@ namespace Server.Engines.Craft
 
         public override int CanCraft(Mobile from, BaseTool tool, Type itemType)
         {
-            int num = 0;
-
-            if (tool == null || tool.Deleted || tool.UsesRemaining <= 0)
+            if (tool == null || tool.Deleted || tool.UsesRemaining < 0)
                 return 1044038; // You have worn out your tool!
-            else if (!tool.CheckAccessible(from, ref num))
-                return num; // The tool must be on your person to use.
+            else if (!BaseTool.CheckAccessible(tool, from))
+                return 1044263; // The tool must be on your person to use.
             else if (itemType != null && (itemType.IsSubclassOf(typeof(BaseFactionTrapDeed)) || itemType == typeof(FactionTrapRemovalKit)) && Faction.Find(from) == null)
                 return 1044573; // You have to be in a faction to do that.
             else if (itemType == typeof(ModifiedClockworkAssembly) && !(from is PlayerMobile && ((PlayerMobile)from).MechanicalLife))
@@ -162,7 +156,7 @@ namespace Server.Engines.Craft
 
         public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
         {
-            if (resourceType == typeof(Silver) || resourceType == typeof(RingOfTheElements))
+            if (resourceType == typeof(Silver))
                 return false;
 
             return base.ConsumeOnFailure(from, resourceType, craftItem);
@@ -585,12 +579,6 @@ namespace Server.Engines.Craft
                 this.AddRes(index, typeof(VoidEssence), 1112327, 3, 502910);
                 this.SetNeededExpansion(index, Expansion.SA);
                 this.ForceNonExceptional(index);
-
-                index = this.AddCraft(typeof(ArcanicRuneStone), 1044051, 1113352, 90.0, 140.0, typeof(CrystalShards), 1073161, 1, 1044253);
-                this.AddRes(index, typeof(PowerCrystal), 1112811, 5, 502910);
-                this.AddSkill(index, SkillName.Magery, 80.0, 85.0);
-                this.SetNeededExpansion(index, Expansion.SA);
-                this.ForceNonExceptional(index);
             }
 
             #region Hitching Post
@@ -764,15 +752,6 @@ namespace Server.Engines.Craft
      
                 index = this.AddCraft(typeof(GargishEarrings), 1044049, 1095787, 65.0, 115.0, typeof(IronIngot), 1044036, 4, 1044037);
                 this.AddRes(index, typeof(BlueDiamond), 1032696, 1, 1044253);
-                this.SetNeededExpansion(index, Expansion.SA);
-
-                index = this.AddCraft(typeof(BraceletOfPrimalConsumption), 1073107, 1157350, 100.0, 580.0, typeof(IronIngot), 1044036, 3, 1044037);
-                this.SetMinSkillOffset(index, 25.0);
-                this.AddRes(index, typeof(RingOfTheElements), 1061104, 1, 1044253);
-                this.AddRes(index, typeof(BloodOfTheDarkFather), 1157343, 5, 1044253);
-                this.AddRes(index, typeof(WhitePearl), 1032694, 10, 1044240);
-                this.AddRecipe(index, (int)TinkerRecipes.BraceletOfPrimalConsumption);
-                this.ForceNonExceptional(index);
                 this.SetNeededExpansion(index, Expansion.SA);
             }
             #endregion

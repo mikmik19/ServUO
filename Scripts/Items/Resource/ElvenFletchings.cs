@@ -2,24 +2,23 @@ using System;
 
 namespace Server.Items
 {
-    [TypeAlias("Server.Items.ElvenFletchings")]
-    public class ElvenFletching : Item
+    public class ElvenFletchings : Item
     {
         [Constructable]
-        public ElvenFletching()
+        public ElvenFletchings()
             : this(1)
         {
         }
 
         [Constructable]
-        public ElvenFletching(int amount)
+        public ElvenFletchings(int amount)
             : base(0x5737)
         {
             this.Stackable = true;
             this.Amount = amount;
         }
 
-        public ElvenFletching(Serial serial)
+        public ElvenFletchings(Serial serial)
             : base(serial)
         {
         }

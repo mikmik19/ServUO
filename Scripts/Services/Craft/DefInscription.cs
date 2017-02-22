@@ -52,43 +52,34 @@ namespace Server.Engines.Craft
 
         public override int CanCraft(Mobile from, BaseTool tool, Type typeItem)
         {
-            int num = 0;
-
-            if (tool == null || tool.Deleted || tool.UsesRemaining <= 0)
+            if (tool == null || tool.Deleted || tool.UsesRemaining < 0)
                 return 1044038; // You have worn out your tool!
-            else if (!tool.CheckAccessible(from, ref num))
-                return num; // The tool must be on your person to use.
+            else if (!BaseTool.CheckAccessible(tool, from))
+                return 1044263; // The tool must be on your person to use.
 
-            if (typeItem != null && typeItem.IsSubclassOf(typeof(SpellScroll)))
+            if (typeItem != null)
             {
-                if (!_Buffer.ContainsKey(typeItem))
+                object o = Activator.CreateInstance(typeItem);
+
+                if (o is SpellScroll)
                 {
-                    object o = Activator.CreateInstance(typeItem);
+                    SpellScroll scroll = (SpellScroll)o;
+                    Spellbook book = Spellbook.Find(from, scroll.SpellID);
 
-                    if (o is SpellScroll)
-                    {
-                        SpellScroll scroll = (SpellScroll)o;
-                        _Buffer[typeItem] = scroll.SpellID;
-                        scroll.Delete();
-                    }
-                    else if (o is IEntity)
-                    {
-                        ((IEntity)o).Delete();
-                        return 1042404; // You don't have that spell!
-                    }
+                    bool hasSpell = (book != null && book.HasSpell(scroll.SpellID));
+
+                    scroll.Delete();
+
+                    return (hasSpell ? 0 : 1042404); // null : You don't have that spell!
                 }
-
-                int id = _Buffer[typeItem];
-                Spellbook book = Spellbook.Find(from, id);
-
-                if (book == null || !book.HasSpell(id))
-                    return 1042404; // You don't have that spell!
+                else if (o is Item)
+                {
+                    ((Item)o).Delete();
+                }
             }
 
             return 0;
         }
-
-        private System.Collections.Generic.Dictionary<Type, int> _Buffer = new System.Collections.Generic.Dictionary<Type, int>();
 
         public override void PlayCraftEffect(Mobile from)
         {

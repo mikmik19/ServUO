@@ -71,8 +71,7 @@ namespace Server.Spells.Fifth
 
                 SpellHelper.Turn(from, target);
 
-                if(target != null)
-                    SpellHelper.CheckReflect((int)this.Circle, ref from, ref target);
+                SpellHelper.CheckReflect((int)this.Circle, ref from, ref target);
 
                 // Algorithm: (highestStat - lowestStat) / 2 [- 50% if resisted]
 

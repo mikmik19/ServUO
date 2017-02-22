@@ -167,7 +167,7 @@ namespace Server
                     damage += damage * quiver.DamageIncrease / 100;
 
                 if (!deathStrike)
-                    totalDamage = Math.Min(damage, Core.TOL && archer ? 30 : 35);	// Direct Damage cap of 30/35
+                    totalDamage = Math.Min(damage, 35);	// Direct Damage cap of 35
                 else
                     totalDamage = Math.Min(damage, 70);	// Direct Damage cap of 70
             }
@@ -254,9 +254,6 @@ namespace Server
                 DamageEaterContext.CheckDamage(m, totalDamage, 0, 0, 0, 0, 0, 100);
             else
                 DamageEaterContext.CheckDamage(m, totalDamage, phys, fire, cold, pois, nrgy, direct);
-
-            if (fire > 0 && totalDamage > 0)
-                SwarmContext.CheckRemove(m);
 
             if(totalDamage > 0)
                 Spells.Mystic.SpellPlagueSpell.OnMobileDamaged(m);
@@ -1307,9 +1304,6 @@ namespace Server
 
         public void ScaleLeech(BaseWeapon wep, int weaponSpeed)
         {
-            if (wep.IsArtifact)
-                return;
-
             if (HitLeechHits > 0)
             {
                 double postcap = (double)HitLeechHits / (double)Imbuing.GetPropRange(wep, AosWeaponAttribute.HitLeechHits)[1];
@@ -1772,130 +1766,6 @@ namespace Server
             set
             {
                 this[AosWeaponAttribute.MysticWeapon] = value;
-            }
-        }
-    }
-
-    [Flags]
-    public enum ExtendedWeaponAttribute
-    {
-        BoneBreaker = 0x00000001,
-        HitSwarm = 0x00000002,
-        HitSparks = 0x00000004,
-        Bane = 0x00000008,
-    }
-
-    public sealed class ExtendedWeaponAttributes : BaseAttributes
-    {
-        public ExtendedWeaponAttributes(Item owner)
-            : base(owner)
-        {
-        }
-
-        public ExtendedWeaponAttributes(Item owner, ExtendedWeaponAttributes other)
-            : base(owner, other)
-        {
-        }
-
-        public ExtendedWeaponAttributes(Item owner, GenericReader reader)
-            : base(owner, reader)
-        {
-        }
-
-        public static int GetValue(Mobile m, AosWeaponAttribute attribute)
-        {
-            if (!Core.AOS)
-                return 0;
-
-            List<Item> items = m.Items;
-            int value = 0;
-
-            #region Enhancement
-            value += Enhancement.GetValue(m, attribute);
-            #endregion
-
-            for (int i = 0; i < items.Count; ++i)
-            {
-                Item obj = items[i];
-
-                if (obj is BaseWeapon)
-                {
-                    AosWeaponAttributes attrs = ((BaseWeapon)obj).WeaponAttributes;
-
-                    if (attrs != null)
-                        value += attrs[attribute];
-                }
-            }
-
-            return value;
-        }
-
-        public int this[ExtendedWeaponAttribute attribute]
-        {
-            get
-            {
-                return this.GetValue((int)attribute);
-            }
-            set
-            {
-                this.SetValue((int)attribute, value);
-            }
-        }
-
-        public override string ToString()
-        {
-            return "...";
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int BoneBreaker
-        {
-            get
-            {
-                return this[ExtendedWeaponAttribute.BoneBreaker];
-            }
-            set
-            {
-                this[ExtendedWeaponAttribute.BoneBreaker] = value;
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int HitSwarm
-        {
-            get
-            {
-                return this[ExtendedWeaponAttribute.HitSwarm];
-            }
-            set
-            {
-                this[ExtendedWeaponAttribute.HitSwarm] = value;
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int HitSparks
-        {
-            get
-            {
-                return this[ExtendedWeaponAttribute.HitSparks];
-            }
-            set
-            {
-                this[ExtendedWeaponAttribute.HitSparks] = value;
-            }
-        }
-
-        [CommandProperty(AccessLevel.GameMaster)]
-        public int Bane
-        {
-            get
-            {
-                return this[ExtendedWeaponAttribute.Bane];
-            }
-            set
-            {
-                this[ExtendedWeaponAttribute.Bane] = value;
             }
         }
     }

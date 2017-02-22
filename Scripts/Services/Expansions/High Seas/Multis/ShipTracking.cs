@@ -50,6 +50,14 @@ namespace Server.Multis
 			return m_Table[from];
 		}
 
+        public static int GetTrackingRange(Mobile from)
+        {
+            if (from == null)
+                return 10;
+
+            return (int)(Math.Max(32, from.Skills[SkillName.Tracking].Value * 1.5));
+        }
+
         public bool IsTrackingBoat(Item item)
         {
             if (item is BaseBoat)
@@ -184,7 +192,11 @@ namespace Server.Multis
                 from.SendMessage("You must be on your boat to use this command.");
 			}
 
-            IPooledEnumerable eable = map.GetItemsInRange(from.Location, MaxRange);
+            //int prowessBonus = Server.Engines.Quests.BountyPlayerEntry.GetRange(from) / 4;//BoatMovementRecord.GetRange(Server.Engines.Quests.BountyPlayerEntry.GetSeaProwess(from));
+            //int range = (int)(Math.Max(32, from.Skills[SkillName.Tracking].Value * 1.5) + prowessBonus); //between 32 and 150 + Sea Prowess Range
+            int range = ShipTrackingContext.GetTrackingRange(from);
+
+            IPooledEnumerable eable = map.GetItemsInRange(from.Location, range);
 			foreach(Item item in eable)
 			{
 				if(context != null && context.IsTrackingBoat(item))
@@ -208,7 +220,7 @@ namespace Server.Multis
 				if(i >= MaxBoats)
 					break;
 
-                BoatTrackingArrow arrow = new BoatTrackingArrow(from, targets[i], MaxRange);
+                BoatTrackingArrow arrow = new BoatTrackingArrow(from, targets[i], MaxRange + (int)from.Skills[SkillName.Tracking].Value);
 
 				if(context == null)
 					arrows.Add(arrow);

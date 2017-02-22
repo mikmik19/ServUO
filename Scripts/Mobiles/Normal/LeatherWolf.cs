@@ -59,7 +59,10 @@ namespace Server.Mobiles
             base.OnDeath(c);
 
             if (0.2 > Utility.RandomDouble())
-                c.DropItem(new LeatherWolfSkin());         
+                c.DropItem(new LeatherWolfSkin());
+
+            if (0.2 > Utility.RandomDouble())
+                c.DropItem(new ReflectiveWolfEye());            
         }
 
         public override void OnCombatantChange()

@@ -23,34 +23,34 @@ namespace Server.Regions
 
         public override void OnEnter(Mobile m)
         {
-            if ((m is PlayerMobile) && m.Alive)
+            if (!(m is PlayerMobile) || !(m.IsPlayer()))
+                return;
+
+            PlayerMobile pm = m as PlayerMobile;            
+
+            if (m.Region.Name == "Ice Wyrm" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CusteauPerron)
             {
-                PlayerMobile pm = m as PlayerMobile;
-
-                if (m.Region.Name == "Ice Wyrm" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CusteauPerron)
-                {
-                    creature = IceWyrm.Spawn(new Point3D(5805 + Utility.RandomMinMax(-5, 5), 240 + Utility.RandomMinMax(-5, 5), 0), Map.Trammel);
-                }
-                else if (m.Region.Name == "Mercutio The Unsavory" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
-                {
-                    creature = MercutioTheUnsavory.Spawn(new Point3D(2582 + Utility.RandomMinMax(-5, 5), 1118 + Utility.RandomMinMax(-5, 5), 0), Map.Trammel);
-                }
-                else if (m.Region.Name == "Djinn" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
-                {
-                    creature = Djinn.Spawn(new Point3D(1732 + Utility.RandomMinMax(-5, 5), 520 + Utility.RandomMinMax(-5, 5), 8), Map.Ilshenar);
-                }
-                else if (m.Region.Name == "Obsidian Wyvern" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
-                {
-                    creature = ObsidianWyvern.Spawn(new Point3D(5136 + Utility.RandomMinMax(-5, 5), 966 + Utility.RandomMinMax(-5, 5), 0), Map.Trammel);
-                }
-                else if (m.Region.Name == "Orc Engineer" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
-                {
-                    creature = OrcEngineer.Spawn(new Point3D(5311 + Utility.RandomMinMax(-5, 5), 1968 + Utility.RandomMinMax(-5, 5), 0), Map.Trammel);
-                }
-
-                if (creature == null)
-                    return;
+                creature = IceWyrm.Spawn(new Point3D(5805 + Utility.RandomMinMax(-5, 5), 240 + Utility.RandomMinMax(-5, 5), 0), Map.Trammel);
             }
+            else if (m.Region.Name == "Mercutio The Unsavory" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
+            {
+                creature = MercutioTheUnsavory.Spawn(new Point3D(2582 + Utility.RandomMinMax(-5, 5), 1118 + Utility.RandomMinMax(-5, 5), 0), Map.Trammel);
+            }
+            else if (m.Region.Name == "Djinn" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
+            {
+                creature = Djinn.Spawn(new Point3D(1732 + Utility.RandomMinMax(-5, 5), 520 + Utility.RandomMinMax(-5, 5), 0), Map.Ilshenar);
+            }
+            else if (m.Region.Name == "Obsidian Wyvern" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
+            {
+                creature = ObsidianWyvern.Spawn(new Point3D(5136 + Utility.RandomMinMax(-5, 5), 966 + Utility.RandomMinMax(-5, 5), 0), Map.Trammel);
+            }
+            else if (m.Region.Name == "Orc Engineer" && pm.ExploringTheDeepQuest == ExploringTheDeepQuestChain.CollectTheComponent)
+            {
+                creature = OrcEngineer.Spawn(new Point3D(5311 + Utility.RandomMinMax(-5, 5), 1968 + Utility.RandomMinMax(-5, 5), 0), Map.Trammel);                
+            }
+
+            if (creature == null)
+                return;
         }
     }
 
@@ -116,8 +116,11 @@ namespace Server.Regions
 
             if (m is PlayerMobile)
             {
-                int equipment = m.Items.Where(i => (i is CanvassRobe || i is BootsOfBallast || i is NictitatingLens || i is AquaPendant || i is GargishNictitatingLens) && (i.Parent is Mobile && ((Mobile)i.Parent).FindItemOnLayer(i.Layer) == i)).Count();
-                
+                Item robe = m.FindItemOnLayer(Layer.OuterTorso);
+                Item boot = m.FindItemOnLayer(Layer.Shoes);
+                Item lens = m.FindItemOnLayer(Layer.Helm);
+                Item neck = m.FindItemOnLayer(Layer.Neck);
+
                 PlayerMobile pm = m as PlayerMobile;
 
                 if (m.AccessLevel == AccessLevel.Player)
@@ -135,7 +138,7 @@ namespace Server.Regions
                             return false;
                         }
                     }
-                    else if (equipment < 4 || pm.ExploringTheDeepQuest != ExploringTheDeepQuestChain.CollectTheComponentComplete)
+                    else if (m.Alive && !(robe is CanvassRobe) || !(lens is NictitatingLens) || !(boot is BootsOfBallast) || !(neck is AquaPendant))
                     {
                         m.SendLocalizedMessage(1154325); // You feel as though by doing this you are missing out on an important part of your journey...
                         return false;

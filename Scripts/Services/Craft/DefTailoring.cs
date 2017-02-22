@@ -36,10 +36,7 @@ namespace Server.Engines.Craft
         DragonTurtleHideChest = 581,
         DragonTurtleHideHelm = 582,
         DragonTurtleHideLegs = 583,
-        DragonTurtleHideBustier = 584,
-
-        // doom
-        CuffsOfTheArchmage = 585
+        DragonTurtleHideBustier = 584
     }
 
     public class DefTailoring : CraftSystem
@@ -83,18 +80,7 @@ namespace Server.Engines.Craft
 
         public override double GetChanceAtMin(CraftItem item)
         {
-            if (item.NameNumber == 1157348) // Cuffs of the Archmage
-                return 0.05; // 5%
-
             return 0.5; // 50%
-        }
-
-        public override bool ConsumeOnFailure(Mobile from, Type resourceType, CraftItem craftItem)
-        {
-            if (resourceType == typeof(MidnightBracers))
-                return false;
-
-            return base.ConsumeOnFailure(from, resourceType, craftItem);
         }
 
         private DefTailoring()
@@ -104,12 +90,10 @@ namespace Server.Engines.Craft
 
         public override int CanCraft(Mobile from, BaseTool tool, Type itemType)
         {
-            int num = 0;
-
-            if (tool == null || tool.Deleted || tool.UsesRemaining <= 0)
+            if (tool == null || tool.Deleted || tool.UsesRemaining < 0)
                 return 1044038; // You have worn out your tool!
-            else if (!tool.CheckAccessible(from, ref num))
-                return num; // The tool must be on your person to use.
+            else if (!BaseTool.CheckAccessible(tool, from))
+                return 1044263; // The tool must be on your person to use.
 
             return 0;
         }
@@ -171,17 +155,9 @@ namespace Server.Engines.Craft
         {
             int index = -1;
 
-            if (Core.SA)
-            {
-                index = AddCraft(typeof(AbyssalCloth), 1044457, 1113350, 110.0, 160.0, typeof(Cloth), 1044286, 50, 1044253);
-                AddRes(index, typeof(CrystallineBlackrock), 1077568, 1, 1044253);
-                SetItemHue(index, 2075);
-                SetNeededExpansion(index, Expansion.SA);
-            }
-
-            #region High Seas
             if (Core.HS)
             {
+                #region High Seas
                 index = AddCraft(typeof(LightPowderCharge), 1044457, 1116159, 0.0, 50.0, typeof(Cloth), 1044286, 1, 1044253);
                 AddRes(index, typeof(BlackPowder), 1095826, 1, 1044253);
                 SetNeededExpansion(index, Expansion.HS);
@@ -736,17 +712,6 @@ namespace Server.Engines.Craft
 		
             index = this.AddCraft(typeof(BoneChest), 1049149, 1025199, 96.0, 121.0, typeof(Leather), 1044462, 12, 1044463);
             this.AddRes(index, typeof(Bone), 1049064, 10, 1049063);
-
-            if (Core.SA)
-            {
-                index = AddCraft(typeof(CuffsOfTheArchmage), 1049149, 1157348, 120.0, 120.1, typeof(Cloth), 1044286, 8, 1044287);
-                this.AddRes(index, typeof(MidnightBracers), 1061093, 1, 1049063);
-                this.AddRes(index, typeof(BloodOfTheDarkFather), 1157343, 5, 1049063);
-                this.AddRes(index, typeof(DarkSapphire), 1032690, 5, 1044253);
-                this.ForceNonExceptional(index);
-                AddRecipe(index, (int)TailorRecipe.CuffsOfTheArchmage);
-                SetNeededExpansion(index, Expansion.SA);
-            }
             #endregion
 
             // Set the overridable material

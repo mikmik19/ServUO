@@ -37,6 +37,8 @@ namespace Server.Spells.Seventh
 
         public void Target(IDamageable m)
         {
+            Mobile mob = m as Mobile;
+
             if (!this.Caster.CanSee(m))
             {
                 this.Caster.SendLocalizedMessage(500237); // Target can not be seen.
@@ -45,11 +47,8 @@ namespace Server.Spells.Seventh
             {
                 SpellHelper.Turn(this.Caster, m);
 
-                Mobile source = this.Caster;
-                Mobile mob = m as Mobile;
-
                 if(mob != null)
-                    SpellHelper.CheckReflect((int)this.Circle, ref source, ref mob);
+                    SpellHelper.CheckReflect((int)this.Circle, this.Caster, ref mob);
 
                 double damage = 0;
 
@@ -84,7 +83,7 @@ namespace Server.Spells.Seventh
 
                 if (damage > 0)
                 {
-                    SpellHelper.Damage(this, mob != null ? mob : m, damage, 0, 100, 0, 0, 0);
+                    SpellHelper.Damage(this, m, damage, 0, 100, 0, 0, 0);
                 }
             }
 

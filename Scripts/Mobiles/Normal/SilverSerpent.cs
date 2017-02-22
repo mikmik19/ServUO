@@ -101,8 +101,16 @@ namespace Server.Mobiles
         {
             base.OnDeath(c);
 
-            if (Utility.RandomDouble() < 0.1)
-                c.DropItem(new SilverSerpentVenom());
+            Region reg = Region.Find(c.GetWorldLocation(), c.Map);
+
+            if (reg.Name == "Tomb of Kings")
+            {
+                if (Utility.RandomDouble() < 0.05)
+                    c.DropItem(new SilverSnakeSkin());
+
+                if (Utility.RandomDouble() < 0.1)
+                    c.DropItem(new SilverSerpentVenom());
+            }
         }
 
         public override void Serialize(GenericWriter writer)

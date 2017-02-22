@@ -21,8 +21,7 @@ namespace Server.Spells.SkillMasteries
         public override SkillName CastSkill { get { return SkillName.Poisoning; } }
 		public override SkillName DamageSkill { get { return SkillName.Anatomy; } }
 
-        public override bool ClearOnSpecialAbility { get { return true; } }
-        public override bool CancelsWeaponAbility { get { return true; } }
+        public override bool CancelsWeaponAbility { get { return false; } }
 
         public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(1.0); } }
 
@@ -42,13 +41,14 @@ namespace Server.Spells.SkillMasteries
 
 			if(CheckWeapon())
 			{
-                if (weapon.Poison == null || weapon.PoisonCharges == 0)
+                if (weapon.Poison == null)
                 {
                     var poison = GetLastPotion(Caster);
 
-                    Caster.SendLocalizedMessage(502137); // Select the poison you wish to use.
-                    Caster.Target = new MasteryTarget(this, autoEnd: false);
+                    if (poison == null || !Caster.InLOS(poison) || !Caster.InRange(poison.GetWorldLocation(), 2))
+                        Caster.SendLocalizedMessage(502137); // Select the poison you wish to use.
 
+                    Caster.Target = new MasteryTarget(this, autoEnd: false);//new InternalTarget(this);
                     return;
                 }
                 else if (!HasSpell(Caster, this.GetType()))
@@ -232,9 +232,6 @@ namespace Server.Spells.SkillMasteries
 
             int malus = (int)(BaseSkillBonus / 4);
             if (defender is PlayerMobile)
-                malus /= 2;
-
-            if (weapon is BaseRanged)
                 malus /= 2;
 
             ResistanceMod mod = new ResistanceMod(ResistanceType.Poison, -malus);

@@ -1047,12 +1047,9 @@ namespace Server
             }
             catch
             {
-		if(Core.Debug)
-		{
-                	Utility.PushColor(ConsoleColor.Red);
-                	Console.WriteLine("Ultima Art: Unable to read client files.");
-                	Utility.PopColor();
-		}
+                Utility.PushColor(ConsoleColor.Red);
+                Console.WriteLine("Ultima Art: Unable to read client files.");
+                Utility.PopColor();
             }
 
             return null;

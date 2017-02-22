@@ -49,16 +49,16 @@ namespace Server.Engines.Harvest
             HarvestDefinition oreAndStone = this.m_OreAndStone = new HarvestDefinition();
 
             // Resource banks are every 8x8 tiles
-            oreAndStone.BankWidth = 8;
-            oreAndStone.BankHeight = 8;
+            oreAndStone.BankWidth = 2;
+            oreAndStone.BankHeight = 2;
 
             // Every bank holds from 10 to 34 ore
-            oreAndStone.MinTotal = 10;
-            oreAndStone.MaxTotal = 34;
+            oreAndStone.MinTotal = 2147483647;
+            oreAndStone.MaxTotal = 2147483647;
 
             // A resource bank will respawn its content every 10 to 20 minutes
-            oreAndStone.MinRespawn = TimeSpan.FromMinutes(10.0);
-            oreAndStone.MaxRespawn = TimeSpan.FromMinutes(20.0);
+            oreAndStone.MinRespawn = TimeSpan.FromMinutes(1.0);
+            oreAndStone.MaxRespawn = TimeSpan.FromMinutes(1.0);
 
             // Skill checking is done on the Mining skill
             oreAndStone.Skill = SkillName.Mining;
@@ -67,11 +67,11 @@ namespace Server.Engines.Harvest
             oreAndStone.Tiles = m_MountainAndCaveTiles;
 
             // Players must be within 2 tiles to harvest
-            oreAndStone.MaxRange = 2;
+            oreAndStone.MaxRange = 4;
 
             // One ore per harvest action
-            oreAndStone.ConsumedPerHarvest = 1;
-            oreAndStone.ConsumedPerFeluccaHarvest = 2;
+            oreAndStone.ConsumedPerHarvest = 10;
+            oreAndStone.ConsumedPerFeluccaHarvest = 20;
 
             // The digging effect
             oreAndStone.EffectActions = new int[] { 11 };
@@ -111,7 +111,7 @@ namespace Server.Engines.Harvest
                 new HarvestVein(05.6, 0.5, res[5], res[0]), // Gold
                 new HarvestVein(04.2, 0.5, res[6], res[0]), // Agapite
                 new HarvestVein(02.8, 0.5, res[7], res[0]), // Verite
-                new HarvestVein(01.4, 0.5, res[8], res[0])// Valorite
+                new HarvestVein(10.4, 0.5, res[8], res[0])// Valorite
             };
 
             oreAndStone.Resources = res;

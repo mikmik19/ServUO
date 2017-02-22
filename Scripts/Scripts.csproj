@@ -116,9 +116,6 @@
     <Compile Include="Commands\ExportWSC.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Commands\GenBounds.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Commands\GenCategorization.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -586,13 +583,6 @@
     <Compile Include="Items\Addons\BaseAddonDeed.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Items\Addons\Craft Addons\AddonToolComponenet.cs" />
-    <Compile Include="Items\Addons\Craft Addons\CraftAddon.cs" />
-    <Compile Include="Items\Addons\Craft Addons\CraftAddonDeed.cs" />
-    <Compile Include="Items\Addons\Craft Addons\FletchingStation.cs" />
-    <Compile Include="Items\Addons\Craft Addons\SewingMachine.cs" />
-    <Compile Include="Items\Addons\Craft Addons\SmithingPress.cs" />
-    <Compile Include="Items\Addons\Craft Addons\SpinningLathe.cs" />
     <Compile Include="Items\Addons\Distillery.cs" />
     <Compile Include="Items\Addons\DolphinRug.cs" />
     <Compile Include="Items\Addons\DungeonHitchingPost.cs" />
@@ -605,7 +595,6 @@
     <Compile Include="Items\Artifacts\Decorative\MapOfTheKnownWorld.cs" />
     <Compile Include="Items\Artifacts\Decorative\MummifiedCorpse.cs" />
     <Compile Include="Items\Artifacts\Decorative\TenthAnniversarySculpture.cs" />
-    <Compile Include="Items\Artifacts\Decorative\TOLDecorationArtifacts.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\GlovesOfFeudalGrip.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\BritchesOfWarding.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\CuffsOfTheArchmage.cs" />
@@ -652,14 +641,17 @@
     <Compile Include="Items\Artifacts\Equipment\Weapons\TheDeceiver.cs" />
     <Compile Include="Items\Decorative\TatteredWallMap.cs" />
     <Compile Include="Items\Equipment\Armor\BoneArms.cs" />
-    <Compile Include="Items\Artifacts\Equipment\Weapons\Craven.cs" />
-    <Compile Include="Items\Artifacts\Equipment\Weapons\CaptainJohnesBlade.cs" />
-    <Compile Include="Items\Artifacts\Equipment\Weapons\Abhorrence.cs" />
-    <Compile Include="Items\Artifacts\Decorative\FigureheadOfBmvArarat.cs" />
-    <Compile Include="Items\Artifacts\Decorative\ShipsBellOfBmvArarat.cs" />
-    <Compile Include="Items\Artifacts\Decorative\SternAnchorOfBmvArarat.cs" />
-    <Compile Include="Items\Artifacts\Equipment\Weapons\Pincer.cs" />
-    <Compile Include="Items\Artifacts\Equipment\Weapons\Equivocation.cs" />
+    <Compile Include="Items\Equipment\Weapons\Craven.cs" />
+    <Compile Include="Items\Equipment\Weapons\GargishCaptainJohnesBlade.cs" />
+    <Compile Include="Items\Equipment\Weapons\CaptainJohnesBlade.cs" />
+    <Compile Include="Items\Equipment\Weapons\Abhorrence.cs" />
+    <Compile Include="Items\Equipment\Weapons\GargishPincer.cs" />
+    <Compile Include="Items\Decorative\FigureheadOfBmvArarat.cs" />
+    <Compile Include="Items\Decorative\ShipsBellOfBmvArarat.cs" />
+    <Compile Include="Items\Decorative\SternAnchorOfBmvArarat.cs" />
+    <Compile Include="Items\Equipment\Weapons\Pincer.cs" />
+    <Compile Include="Items\Equipment\Weapons\GargishEquivocation.cs" />
+    <Compile Include="Items\Equipment\Weapons\Equivocation.cs" />
     <Compile Include="Items\Artifacts\Equipment\Weapons\FNPitchfork.cs" />
     <Compile Include="Items\Books\RunicAtlas.cs" />
     <Compile Include="Items\Consumables\AlterContract.cs" />
@@ -826,7 +818,6 @@
     <Compile Include="Items\Quest\RedKey1.cs" />
     <Compile Include="Items\Quest\Redkeyfragment.cs" />
     <Compile Include="Items\Quest\SAQuestItems.cs" />
-    <Compile Include="Items\Quest\SatietyCure.cs" />
     <Compile Include="Items\Quest\ScrollOfAbraxus.cs" />
     <Compile Include="Items\Quest\SealedNotesForJamal.cs" />
     <Compile Include="Items\Quest\SignedTuitionReimbursementForm.cs" />
@@ -853,7 +844,6 @@
     <Compile Include="Items\Artifacts\Equipment\Clothing\ShadowCloakOfRejuvenation.cs" />
     <Compile Include="Items\Artifacts\Equipment\Armor\WardedDemonboneBracers.cs" />
     <Compile Include="Items\Artifacts\Equipment\Clothing\WardensArmorOfAugmentation.cs" />
-    <Compile Include="Items\Resource\BloodOfTheDarkFather.cs" />
     <Compile Include="Items\Resource\WorkableGlass.cs" />
     <Compile Include="Items\Tools\BaseHarvestTool.cs">
       <SubType>Code</SubType>
@@ -2087,7 +2077,6 @@
     <Compile Include="Mobiles\NPCs\Lenley.cs" />
     <Compile Include="Mobiles\NPCs\Regina.cs" />
     <Compile Include="Mobiles\NPCs\Thalia.cs" />
-    <Compile Include="Mobiles\NPCs\Vrulkax.cs" />
     <Compile Include="Mobiles\NPCs\WanderingShaman.cs" />
     <Compile Include="Mobiles\PlayerMobile.cs" />
     <Compile Include="Mobiles\Normal\PoisonElemental.cs" />
@@ -2584,7 +2573,6 @@
     <Compile Include="Quests\HumanHeritage.cs" />
     <Compile Include="Quests\MasteringtheSoulforge.cs" />
     <Compile Include="Quests\Ortlem.cs" />
-    <Compile Include="Quests\PeptaQuest.cs" />
     <Compile Include="Quests\RatmenSanctuaryQuest.cs" />
     <Compile Include="Quests\Sacred Quest\QuestOfSingularity.cs" />
     <Compile Include="Quests\Sacred Quest\ShrineOfSingularity.cs" />
@@ -10014,7 +10002,6 @@
     <Compile Include="Skills\Fishing.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Skills\Imbuing\ResourceDrops.cs" />
     <Compile Include="Skills\Lumberjacking.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -10241,10 +10228,16 @@
     <Compile Include="Services\BasketWeaving\BasketWeavingBook.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Services\BasketWeaving\Basketweavingpliers.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Services\BasketWeaving\Clippers.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\BasketWeaving\ColorFixative.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Services\BasketWeaving\DefBasketweaving.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Services\BasketWeaving\MiscSAResources.cs">

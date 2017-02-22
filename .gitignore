@@ -18,9 +18,7 @@
 /Saves
 /Web
 /Docs
-/Reports
-staffHistory.xml
-reportHistory.xml
+/output
 *.csproj.user
 *.suo
 *.log

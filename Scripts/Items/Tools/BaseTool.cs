@@ -92,8 +92,6 @@ namespace Server.Items
             }
         }
 
-        public virtual bool BreakOnDepletion { get { return true; } }
-
         public abstract CraftSystem CraftSystem { get; }
 
         public BaseTool(int itemID)
@@ -128,15 +126,9 @@ namespace Server.Items
             this.LabelToAffix(m, 1017323, AffixType.Append, ": " + this.m_UsesRemaining.ToString()); // Durability
         }
 
-        public virtual bool CheckAccessible(Mobile m, ref int num)
+        public static bool CheckAccessible(Item tool, Mobile m)
         {
-            if (!IsChildOf(m) && Parent != m)
-            {
-                num = 1044263;
-                return false;
-            }
-
-            return true;
+            return (tool.IsChildOf(m) || tool.Parent == m);
         }
 
         public static bool CheckTool(Item tool, Mobile m)

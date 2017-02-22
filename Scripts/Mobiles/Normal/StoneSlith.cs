@@ -93,7 +93,15 @@ namespace Server.Mobiles
 
             if (Utility.RandomDouble() < 0.05)
             {
-                c.DropItem(new SlithEye());
+                switch (Utility.Random(2))
+                {
+                    case 0:
+                        c.DropItem(new SlithTongue());
+                        break;
+                    case 1:
+                        c.DropItem(new SlithEye());
+                        break;
+                }
             }
 
             if (Utility.RandomDouble() < 0.25)

@@ -3,7 +3,7 @@
 
 @SET SRVPATH=%CURPATH%Server\
 
-@TITLE: ServUO - https://www.servuo.com
+@TITLE: ServUO - http://www.servuo.com
 
 ::##########
 

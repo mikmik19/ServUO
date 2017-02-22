@@ -73,15 +73,7 @@ namespace Server.Mobiles
                     if (dropped is OrcishSchematics)
                     {
                         dropped.Delete();
-
-                        if (from.Race == Race.Gargoyle)
-                        {
-                            from.AddToBackpack(new GargishNictitatingLens());
-                        }
-                        else
-                        {
-                            from.AddToBackpack(new NictitatingLens());
-                        }
+                        from.AddToBackpack(new NictitatingLens());
 
                         if (!m.HasGump(typeof(JosefSkimmonsCompleteGump)))
                         {

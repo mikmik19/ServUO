@@ -11,7 +11,7 @@ namespace Server.Items
             : base(0xE86)
         {
             this.Weight = 11.0;
-            this.UsesRemaining = 50;
+            this.UsesRemaining = 2147483647;
             this.ShowUsesRemaining = true;
         }
 

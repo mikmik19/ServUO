@@ -86,6 +86,16 @@ namespace Server.Mobiles
                 this.PackItem(new BolaBall());
         }
 
+        //Item item = aggressor.FindItemOnLayer( Layer.Helm );
+
+        //if ( item is OrcishKinMask )
+        //{
+        //	AOS.Damage( aggressor, 50, 0, 100, 0, 0, 0 );
+        //	item.Delete();
+        //	aggressor.FixedParticles( 0x36BD, 20, 10, 5044, EffectLayer.Head );
+        //	aggressor.PlaySound( 0x307 );
+        //}
+        //}
         public EnslavedGreenGoblin(Serial serial)
             : base(serial)
         {
@@ -119,12 +129,36 @@ namespace Server.Mobiles
                 return OppositionGroup.SavagesAndOrcs;
             }
         }
+        //public override bool IsEnemy( Mobile m )
+        //{
+        //	if ( m.Player && m.FindItemOnLayer( Layer.Helm ) is OrcishKinMask )
+        //		return false;
 
+        //	return base.IsEnemy( m );
+        //}
+
+        //public override void AggressiveAction( Mobile aggressor, bool criminal )
+        //{
+        //base.AggressiveAction( aggressor, criminal );
         public override void GenerateLoot()
         {
             this.AddLoot(LootPack.Meager);
         }
+        public override void OnDeath(Container c)
+        {
 
+            base.OnDeath(c);
+            Region reg = Region.Find(c.GetWorldLocation(), c.Map);
+            if (0.25 > Utility.RandomDouble() && reg.Name == "Enslaved Goblins")
+            {
+                switch (Utility.Random(2))
+                {
+                    case 0: c.DropItem(new EssenceControl()); break;
+                    case 1: c.DropItem(new GoblinBlood()); break;
+
+                }
+            }
+        }
         public override void Serialize(GenericWriter writer)
         {
             base.Serialize(writer);
